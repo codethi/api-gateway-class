@@ -38,8 +38,6 @@ export class ProxyService {
 
     this.logger.log(`Proxying ${method} request to ${serviceName}: ${url}`);
 
-    const fallback = this.createServiceFallback(serviceName, method, path);
-
     return this.circuitBreakerService.executeWithCircuitBreaker(
       async () => {
         const enhancedHeaders = {
@@ -65,11 +63,12 @@ export class ProxyService {
             response.data,
           );
         }
-
         return response.data;
       },
-      fallback,
       `proxy-${serviceName}`,
+      () => {
+        throw new Error(`${serviceName} service is temporarily unavailable`);
+      },
       { failureThreshold: 3, timeout: 30000, resetTimeout: 30000 },
     );
   }
