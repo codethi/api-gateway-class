@@ -19,6 +19,7 @@ import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { CheckoutModule } from './checkout/checkout.module';
 import { PaymentsModule } from './payments/payments.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { PaymentsModule } from './payments/payments.module';
       ],
       inject: [ConfigService],
     }),
+    MetricsModule,
     ProxyModule,
     MiddlewareModule,
     AuthModule,
